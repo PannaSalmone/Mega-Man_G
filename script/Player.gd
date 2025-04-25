@@ -12,6 +12,7 @@ var direction := 1
 var under_water := false
 var is_taking_damage := false
 var is_invincible := false
+var is_shooting := false
 
 @onready var attacktimer = $Shootanimtimer
 @onready var defeatsfx = preload("res://assets/AUDIO/SFX/MegamanDefeat.wav")
@@ -26,33 +27,19 @@ func _physics_process(_delta):
 
 	if direction == -1:
 		$Sprite.flip_h = true
+		%Raycast.position.x = 8
 	else:
 		$Sprite.flip_h = false
-	
+		%Raycast.position.x = -8
 	if not is_on_floor():
 		velocity.y = clamp(velocity.y + 15.0, -MAX_FALL_SPEED, MAX_FALL_SPEED)
 		if velocity.y > MAX_FALL_SPEED: #Limits fall speeds
 			velocity.y = MAX_FALL_SPEED
 	
-	
-#Animations
- #Replace all with a state machine
-	
-	#if is_taking_damage == true:
-		#$Sprite/AnimationPlayer.play("damage")
-
-#Actions:
-
-
-	
 	if Global.playerHP <= 0:
 		death()
 	
 	move_and_slide()
-
-#shoot
-	
-
 
 func _on_pit_ops():
 	death()
@@ -87,11 +74,10 @@ func death():
 	get_tree().change_scene_to_file("res://test_man_stage.tscn")
 	Global.reset_vars()
 	
-	
 #Damage
 func damage(damage):
-	#$State.change_state("Hit")
 	if is_invincible == false:
+		$FSM.change_state($FSM.current_state,"Hit")
 		Global.playerHP -= damage
 		if Global.playerHP > 0:
 			is_invincible = true
@@ -118,6 +104,7 @@ func change_anim(str):
 	$Sprite/AnimationPlayer.play(str)
 
 func shoot():
+	%ShootingTimer.start()
 	var projectile_pos = $Shootpos.global_position
 	$Shootpos.position.x = 13 * direction
 	Global.player_dir = direction

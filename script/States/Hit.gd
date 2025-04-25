@@ -1,19 +1,15 @@
 extends State
 class_name HitState
 
-var player
+@onready var animator = %AnimationPlayer
+var player : CharacterBody2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	player = get_parent().get_parent()
-	#player.change_anim("Idle")
-	player.velocity.x = 0
-	player.velocity.y = 0
-	player.change_anim("damage")
-	await get_tree().create_timer(0.3).timeout
-	player.change_anim("idle")
-	get_parent().change_state("Idle")
+func enter():
+	player = get_tree().get_first_node_in_group("Player")
+	player.velocity = Vector2(0,0)
+	animator.play("Damage")
+	await get_tree().create_timer(0.6).timeout
+	state_transition.emit(self, "Idle")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func exit():
+	state_transition.emit(self, "Idle")

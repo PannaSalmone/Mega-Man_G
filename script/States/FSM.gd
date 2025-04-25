@@ -14,14 +14,15 @@ func _ready():
 			child.state_transition.connect(change_state)
 
 	if initial_state:
-		initial_state.Enter()
+		initial_state.enter()
 		current_state = initial_state
 
 #Call the current states update function continuosly
 func _process(delta):
 	%Label.text= str(current_state)
 	if current_state:
-		current_state.Update(delta)
+		current_state.update(delta)
+	
 
 #region State Management
 #Use force_change_state cautiously, it immediately switches to a state regardless of any transitions.
@@ -43,7 +44,7 @@ func force_change_state(new_state : String):
 		var exit_callable = Callable(current_state, "Exit")
 		exit_callable.call_deferred()
 	
-	newState.Enter()
+	newState.enter()
 	
 	current_state = newState
 	
@@ -61,8 +62,12 @@ func change_state(source_state : State, new_state_name : String):
 	#if current_state:
 		#current_state.Exit()
 		
-	new_state.Enter()
+	new_state.enter()
 	
 	current_state = new_state
 
 #endregion
+
+
+func _on_shooting_timer_timeout() -> void:
+	current_state.reset_anim()

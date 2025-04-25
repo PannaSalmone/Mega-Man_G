@@ -7,11 +7,14 @@ class_name State
 @warning_ignore("unused_signal")
 signal state_transition
 
-func Enter():
+func enter() -> void:
 	pass
 	
-func Exit():
+func exit() -> void:
 	pass
 	
-func Update(_delta:float):
+func update(_delta:float) -> void:
+	pass
+
+func reset_anim() -> void:
 	pass

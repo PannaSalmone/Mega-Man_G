@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bq6mgekl3uhqd"]
+[gd_scene load_steps=30 format=3 uid="uid://bq6mgekl3uhqd"]
 
 [ext_resource type="Script" uid="uid://bg32lvbhv4hrd" path="res://script/Player.gd" id="1_4075b"]
 [ext_resource type="Texture2D" uid="uid://b2r0mvkhsp544" path="res://assets/GFX/player/MegaMan.png" id="3_nj304"]
@@ -7,6 +7,23 @@
 [ext_resource type="Script" uid="uid://d0mbrt232w4mc" path="res://script/States/Idle.gd" id="5_sweqy"]
 [ext_resource type="Script" uid="uid://clmvh0ygo2j6y" path="res://script/States/Walk.gd" id="6_2hs0m"]
 [ext_resource type="Script" uid="uid://b3jc5464amaa4" path="res://script/States/Onair.gd" id="7_1jxqw"]
+[ext_resource type="Script" uid="uid://b4oywbmu3ncxw" path="res://script/States/Hit.gd" id="8_dw050"]
+[ext_resource type="Script" uid="uid://8qhsmw7ukjbn" path="res://script/States/Slide.gd" id="9_b26j0"]
+
+[sub_resource type="Animation" id="Animation_y4kaq"]
+resource_name = "Damage"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [9]
+}
 
 [sub_resource type="Animation" id="Animation_hpw50"]
 resource_name = "Idle"
@@ -23,6 +40,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0, 1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_jfgif"]
+resource_name = "Jump"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [7]
 }
 
 [sub_resource type="Animation" id="Animation_1g8eo"]
@@ -85,8 +118,10 @@ tracks/0/keys = {
 "values": [2]
 }
 
-[sub_resource type="Animation" id="Animation_y4kaq"]
-resource_name = "damage"
+[sub_resource type="Animation" id="Animation_xtd5c"]
+resource_name = "Walk"
+length = 0.48
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -94,10 +129,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.12, 0.24, 0.36),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [9]
+"values": [3, 4, 5, 6]
 }
 
 [sub_resource type="Animation" id="Animation_w7ik5"]
@@ -149,48 +184,15 @@ tracks/0/keys = {
 "values": [13, 14, 15, 16]
 }
 
-[sub_resource type="Animation" id="Animation_xtd5c"]
-resource_name = "Walk"
-length = 0.48
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.12, 0.24, 0.36),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [3, 4, 5, 6]
-}
-
-[sub_resource type="Animation" id="Animation_jfgif"]
-resource_name = "Jump"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [7]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5xxjd"]
 _data = {
+&"Damage": SubResource("Animation_y4kaq"),
 &"Idle": SubResource("Animation_hpw50"),
 &"Jump": SubResource("Animation_jfgif"),
 &"RESET": SubResource("Animation_1g8eo"),
 &"Slide": SubResource("Animation_gm1xq"),
 &"Tipping": SubResource("Animation_b8uwb"),
 &"Walk": SubResource("Animation_xtd5c"),
-&"damage": SubResource("Animation_y4kaq"),
 &"shoot_idle": SubResource("Animation_w7ik5"),
 &"shoot_jump": SubResource("Animation_wm6rk"),
 &"shoot_walk": SubResource("Animation_osa1q")
@@ -238,7 +240,7 @@ _data = {
 size = Vector2(14, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yy37y"]
-size = Vector2(20, 14)
+size = Vector2(14, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u011g"]
 size = Vector2(6, 6)
@@ -283,7 +285,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 10
-collision_mask = 15
+collision_mask = 11
 script = ExtResource("1_4075b")
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -307,14 +309,21 @@ libraries = {
 }
 
 [node name="Collision" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_4rnrp")
 metadata/_edit_lock_ = true
 
 [node name="SlidingColl" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_yy37y")
 disabled = true
+
+[node name="Raycast" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-8, 0)
+target_position = Vector2(0, -8)
 
 [node name="Shootpos" type="Marker2D" parent="."]
 position = Vector2(13, 3)
@@ -373,11 +382,15 @@ script = ExtResource("7_1jxqw")
 [node name="Walk" type="Node" parent="FSM"]
 script = ExtResource("6_2hs0m")
 
+[node name="Hit" type="Node" parent="FSM"]
+script = ExtResource("8_dw050")
+
+[node name="Slide" type="Node" parent="FSM"]
+script = ExtResource("9_b26j0")
+
 [connection signal="body_entered" from="waterdetect" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="waterdetect" to="." method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="Bubble" to="." method="_on_bubble_timeout"]
 [connection signal="timeout" from="Invincibility" to="." method="_on_invincibility_timeout"]
 [connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
-[connection signal="timeout" from="ShootingTimer" to="FSM/Idle" method="_on_shooting_timer_timeout"]
-[connection signal="timeout" from="ShootingTimer" to="FSM/Walk" method="_on_shooting_timer_timeout"]
-[connection signal="timeout" from="ShootingTimer" to="FSM/Onair" method="_on_shooting_timer_timeout"]
+[connection signal="timeout" from="ShootingTimer" to="FSM" method="_on_shooting_timer_timeout"]

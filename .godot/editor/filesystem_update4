@@ -1,0 +1,5 @@
+res://test_man_stage.tscn
+res://assets/GFX/pal.gdshader
+res://Scenes/Stages/test_man_stage.tscn
+res://player.tscn
+res://script/Player.gd
