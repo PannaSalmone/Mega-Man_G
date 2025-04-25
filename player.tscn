@@ -325,6 +325,11 @@ unique_name_in_owner = true
 position = Vector2(-8, 0)
 target_position = Vector2(0, -8)
 
+[node name="Raycast2" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(8, 0)
+target_position = Vector2(0, -8)
+
 [node name="Shootpos" type="Marker2D" parent="."]
 position = Vector2(13, 3)
 

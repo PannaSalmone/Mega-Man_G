@@ -12,10 +12,10 @@ func enter():
 	player.WALK_SPEED = 150
 	animator.play("Slide")
 	await get_tree().create_timer(0.6).timeout
-	while %Raycast.is_colliding():
+	while %Raycast.is_colliding() or %Raycast2.is_colliding():
 		await get_tree().create_timer(0.1).timeout  # Attendi un breve intervallo prima di controllare di nuovo
 	
-	exit()
+	state_transition.emit(self, "Idle")
 
 func update(_delta) -> void:
 	player.velocity.x = player.direction * player.WALK_SPEED
@@ -25,11 +25,11 @@ func update(_delta) -> void:
 		player.velocity.x = direction * player.WALK_SPEED
 	
 	if not player.is_on_floor():
-		exit()
+		state_transition.emit(self, "Onair")
 
 func exit():
 	player.WALK_SPEED = 82.5
 	%Collision.disabled = false
 	%SlidingColl.disabled = true
 	player.velocity.x = 0
-	state_transition.emit(self, "Idle")
+	

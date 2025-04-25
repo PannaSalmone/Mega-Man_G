@@ -17,7 +17,7 @@ func update(_delta : float):
 		player.shoot()
 
 	if Input.is_action_just_pressed("jump"):
-		if Input.is_action_pressed("down"):
+		if Input.is_action_pressed("down") and Global.can_slide == true:
 			state_transition.emit(self, "Slide")
 		else:
 			player.velocity.y = -player.JUMP_SPEED * 1.0

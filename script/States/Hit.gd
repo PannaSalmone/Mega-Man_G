@@ -12,4 +12,4 @@ func enter():
 	state_transition.emit(self, "Idle")
 
 func exit():
-	state_transition.emit(self, "Idle")
+	pass

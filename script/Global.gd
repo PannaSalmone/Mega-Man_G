@@ -1,11 +1,15 @@
 extends Node2D
 
 @export var MM_max_shoot_num := 3
+
 var player_dir = 1
 var playerxy = Vector2()
 var playerHP := 28
 var current_respawnxy = Vector2i.ZERO
 var underwater := false
+
+var can_slide := true
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

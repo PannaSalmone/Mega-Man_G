@@ -139,4 +139,12 @@ offset_right = 1251.0
 offset_bottom = 171.0
 text = "Respawner"
 
+[node name="Label6" type="Label" parent="."]
+offset_left = 1606.0
+offset_top = 85.0
+offset_right = 1752.0
+offset_bottom = 134.0
+text = "WATER
+WATER and WATER"
+
 [connection signal="ops" from="Pit" to="Player" method="_on_pit_ops"]

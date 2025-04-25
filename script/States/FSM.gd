@@ -59,8 +59,8 @@ func change_state(source_state : State, new_state_name : String):
 		print("New state is empty")
 		return
 		
-	#if current_state:
-		#current_state.Exit()
+	if current_state:
+		current_state.exit()
 		
 	new_state.enter()
 	

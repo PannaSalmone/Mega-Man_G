@@ -14,6 +14,7 @@ var is_taking_damage := false
 var is_invincible := false
 var is_shooting := false
 
+
 @onready var attacktimer = $Shootanimtimer
 @onready var defeatsfx = preload("res://assets/AUDIO/SFX/MegamanDefeat.wav")
 @onready var splashsfx = preload("res://assets/AUDIO/SFX/splash.wav")
@@ -27,10 +28,8 @@ func _physics_process(_delta):
 
 	if direction == -1:
 		$Sprite.flip_h = true
-		%Raycast.position.x = 8
 	else:
 		$Sprite.flip_h = false
-		%Raycast.position.x = -8
 	if not is_on_floor():
 		velocity.y = clamp(velocity.y + 15.0, -MAX_FALL_SPEED, MAX_FALL_SPEED)
 		if velocity.y > MAX_FALL_SPEED: #Limits fall speeds
@@ -75,10 +74,10 @@ func death():
 	Global.reset_vars()
 	
 #Damage
-func damage(damage):
+func damage(dmg):
 	if is_invincible == false:
 		$FSM.change_state($FSM.current_state,"Hit")
-		Global.playerHP -= damage
+		Global.playerHP -= dmg
 		if Global.playerHP > 0:
 			is_invincible = true
 			#is_taking_damage = true
@@ -100,8 +99,8 @@ func _on_bubble_timeout():
 		Effect_manager.bubble()
 		$Bubble.start()
 
-func change_anim(str):
-	$Sprite/AnimationPlayer.play(str)
+func change_anim(string):
+	$Sprite/AnimationPlayer.play(string)
 
 func shoot():
 	%ShootingTimer.start()

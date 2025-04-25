@@ -12,7 +12,7 @@ func enter():
 	player.is_shooting = false
 
 func exit():
-	state_transition.emit(self, "Idle")
+	player.velocity.x = 0
 
 func update(_delta: float):
 	# Increase var value 
@@ -28,8 +28,7 @@ func update(_delta: float):
 		else:
 			animator.play("Tipping" if left_right_key_press_time < 7 else "Walk")
 	else:
-		player.velocity.x = 0
-		exit()
+		state_transition.emit(self, "Idle")
 	
 	#slide
 	if Input.is_action_just_pressed("slide"):
@@ -43,7 +42,7 @@ func update(_delta: float):
 
 	# Jump
 	if Input.is_action_just_pressed("jump"):
-		if Input.is_action_pressed("down"):
+		if Input.is_action_pressed("down") and Global.can_slide == true:
 			state_transition.emit(self, "Slide")
 		else:
 			player.velocity.y = -player.JUMP_SPEED
