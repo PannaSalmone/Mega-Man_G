@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bq6mgekl3uhqd"]
+[gd_scene load_steps=31 format=3 uid="uid://bq6mgekl3uhqd"]
 
 [ext_resource type="Script" uid="uid://bg32lvbhv4hrd" path="res://script/Player.gd" id="1_4075b"]
 [ext_resource type="Texture2D" uid="uid://b2r0mvkhsp544" path="res://assets/GFX/player/MegaMan.png" id="3_nj304"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://b3jc5464amaa4" path="res://script/States/Onair.gd" id="7_1jxqw"]
 [ext_resource type="Script" uid="uid://b4oywbmu3ncxw" path="res://script/States/Hit.gd" id="8_dw050"]
 [ext_resource type="Script" uid="uid://8qhsmw7ukjbn" path="res://script/States/Slide.gd" id="9_b26j0"]
+[ext_resource type="Script" uid="uid://cocixu83ngs8b" path="res://script/States/Dead.gd" id="10_n7ghd"]
 
 [sub_resource type="Animation" id="Animation_y4kaq"]
 resource_name = "Damage"
@@ -285,7 +286,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 10
-collision_mask = 11
+collision_mask = 27
 script = ExtResource("1_4075b")
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -322,12 +323,12 @@ disabled = true
 
 [node name="Raycast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-8, 0)
+position = Vector2(-7, 0)
 target_position = Vector2(0, -8)
 
 [node name="Raycast2" type="RayCast2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(8, 0)
+position = Vector2(7, 0)
 target_position = Vector2(0, -8)
 
 [node name="Shootpos" type="Marker2D" parent="."]
@@ -393,8 +394,11 @@ script = ExtResource("8_dw050")
 [node name="Slide" type="Node" parent="FSM"]
 script = ExtResource("9_b26j0")
 
-[connection signal="body_entered" from="waterdetect" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="waterdetect" to="." method="_on_area_2d_body_exited"]
+[node name="Dead" type="Node" parent="FSM"]
+script = ExtResource("10_n7ghd")
+
+[connection signal="body_entered" from="waterdetect" to="." method="_on_waterdetect_body_entered"]
+[connection signal="body_exited" from="waterdetect" to="." method="_on_waterdetect_body_exited"]
 [connection signal="timeout" from="Bubble" to="." method="_on_bubble_timeout"]
 [connection signal="timeout" from="Invincibility" to="." method="_on_invincibility_timeout"]
 [connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]

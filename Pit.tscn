@@ -6,7 +6,7 @@
 size = Vector2(100, 14)
 
 [node name="Pit" type="Area2D"]
-collision_layer = 0
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("1_lh0rb")
 

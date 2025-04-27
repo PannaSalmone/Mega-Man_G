@@ -24,6 +24,12 @@ func update(_delta) -> void:
 		player.direction = direction
 		player.velocity.x = direction * player.WALK_SPEED
 	
+	#Jump
+	if Input.is_action_just_pressed("jump"):
+		if not %Raycast.is_colliding() and not %Raycast2.is_colliding():
+			player.velocity.y = -player.JUMP_SPEED * 1.0
+			state_transition.emit(self, "Onair")
+	
 	if not player.is_on_floor():
 		state_transition.emit(self, "Onair")
 

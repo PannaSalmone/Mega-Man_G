@@ -23,6 +23,9 @@ func update(_delta : float):
 			player.velocity.y = -player.JUMP_SPEED * 1.0
 			state_transition.emit(self, "Onair")
 	
+	if Input.is_action_just_pressed("slide"):
+		state_transition.emit(self, "Slide")
+	
 	if not player.is_on_floor():
 		state_transition.emit(self, "Onair")
 

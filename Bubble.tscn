@@ -1,7 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://dfq1i5g0xg4s"]
 
 [ext_resource type="Texture2D" uid="uid://br2l4b088xt46" path="res://assets/GFX/player/Bubble.png" id="1_3asry"]
-[ext_resource type="Script" path="res://script/Bubble.gd" id="1_x7rpk"]
+[ext_resource type="Script" uid="uid://b7ynx0kcct0vm" path="res://script/Bubble.gd" id="1_x7rpk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_to824"]
+size = Vector2(5, 3)
 
 [sub_resource type="Animation" id="Animation_622eb"]
 length = 0.001
@@ -38,28 +41,23 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bgefd"]
 _data = {
-"RESET": SubResource("Animation_622eb"),
-"bubble": SubResource("Animation_bxng7")
+&"RESET": SubResource("Animation_622eb"),
+&"bubble": SubResource("Animation_bxng7")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tdbl"]
-size = Vector2(4, 2)
-
 [node name="Bubble" type="Area2D"]
-collision_layer = 4
+collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_x7rpk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_to824")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_3asry")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
-"": SubResource("AnimationLibrary_bgefd")
+&"": SubResource("AnimationLibrary_bgefd")
 }
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -4)
-shape = SubResource("RectangleShape2D_7tdbl")
-
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]
